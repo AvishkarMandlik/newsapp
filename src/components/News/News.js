@@ -17,8 +17,15 @@ export default class News extends Component {
         let parsedData = await data.json();
         this.setState({ articles: parsedData.articles });  
     }
-  
-    
+     handlePrevClick = async () => {
+      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page - 1}`
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({ articles: parsedData.articles });  
+      this.setState({
+        page: this.state.page - 1,
+      })
+    }
     
       handleNextClick = async ()=>{
       let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page + 1}`
