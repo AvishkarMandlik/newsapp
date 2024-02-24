@@ -6,15 +6,28 @@ export default class News extends Component {
         super();
         this.state = {
             articles: [],
-            loading: false
+            loading: false,
+            page:1
         }
     }
 
     async componentDidMount(){
-        let url = "https://newsapi.org/v2/top-headlines?q=apple&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85"
+        let url = "https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85"
         let data = await fetch(url);
         let parsedData = await data.json();
         this.setState({ articles: parsedData.articles });  
+    }
+  
+    
+    
+      handleNextClick = async ()=>{
+      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page + 1}`
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({ articles: parsedData.articles });  
+      this.setState({
+        page: this.state.page +1,
+      })
     }
 
   render() {
@@ -27,6 +40,10 @@ export default class News extends Component {
                     return <div className="col-md-3" key={element.url} >
                     <NewsItem title={element.title?element.title?.slice(0,45):""} description={element.title?element.description?.slice(0,100):""} imgUrl={element.urlToImage} newsUrl={element.url}/></div>
                 })}
+            </div>
+            <div className='container d-flex justify-content-between'>
+            <button disabled={this.state.page<=1} type="button" className="btn btn-secondary" onClick={this.handlePrevClick}>&larr; Previous</button>
+            <button type="button" className="btn btn-secondary" onClick={this.handleNextClick}>Next &rarr;</button>
             </div>
         </div>
       </div>
