@@ -12,13 +12,13 @@ export default class News extends Component {
     }
 
     async componentDidMount(){
-        let url = "https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=1&pageSize=20"
+        let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=1&pageSize=${this.props.pageSize}`;
         let data = await fetch(url);
         let parsedData = await data.json();
         this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults });  
     }
      handlePrevClick = async () => {
-      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page - 1}&pageSize=20`
+      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({ articles: parsedData.articles });  
@@ -32,7 +32,7 @@ export default class News extends Component {
 
         }
         else{
-          let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page + 1}&pageSize=20`
+          let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
           this.setState({ articles: parsedData.articles });  
@@ -46,9 +46,10 @@ export default class News extends Component {
   render() {
     return (
       <div>
-        <div className="container-fluid" style={{backgroundColor:"#e9ecef"}}>
+        <div className="container-fluid mt-lg-5" style={{backgroundColor:"#e9ecef"}}>
+        <br/>
+        <h2 className='text-center'>NewsMonkey - Top Headlines</h2>
           <div className="row">
-            <h2 className='text-center'>NewsMonkey - Top Headlines</h2>
                 {this.state.articles.map((element)=>{
                     return <div className="col-md-3" key={element.url} >
                     <NewsItem title={element.title?element.title?.slice(0,45):""} description={element.title?element.description?.slice(0,100):""} imgUrl={element.urlToImage} newsUrl={element.url}/></div>
@@ -56,7 +57,7 @@ export default class News extends Component {
             </div>
             <div className='container d-flex justify-content-between'>
             <button disabled={this.state.page<=1} type="button" className="btn btn-secondary" onClick={this.handlePrevClick}>&larr; Previous</button>
-            <button type="button" className="btn btn-secondary" onClick={this.handleNextClick}>Next &rarr;</button>
+            <button disabled={this.state.page +1 > Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" className="btn btn-secondary" onClick={this.handleNextClick}>Next &rarr;</button>
             </div>
         </div>
       </div>
