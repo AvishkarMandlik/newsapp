@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from  '../NewsItem/NewsItem'
+import Spinner from '../Spinner/Spinner';
 export default class News extends Component {
 
     constructor(){
@@ -13,44 +14,54 @@ export default class News extends Component {
 
     async componentDidMount(){
         let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=1&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
-        this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults });  
-    }
-     handlePrevClick = async () => {
-      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({ articles: parsedData.articles });  
-      this.setState({
-        page: this.state.page - 1,
-      })
+        this.setState({ 
+          articles: parsedData.articles,
+          totalResults: parsedData.totalResults,
+          loading: false
+          });  
     }
     
+     handlePrevClick = async () => {
+      let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+      this.setState({loading: true});
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: parsedData.articles,
+        page: this.state.page - 1,
+        loading: false
+      })
+    }
+  
+    
       handleNextClick = async ()=>{
-        if(this.state.page +1 > Math.ceil(this.state.totalResults/20)){
-
-        }
-        else{
+        if(!(this.state.page +1 > Math.ceil(this.state.totalResults/20))){
           let url = `https://newsapi.org/v2/everything?q=cricket&from=2024-02-21&to=2024-02-21&sortBy=popularity&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+          this.setState({loading: true});
           let data = await fetch(url);
           let parsedData = await data.json();
-          this.setState({ articles: parsedData.articles });  
           this.setState({
+            articles: parsedData.articles,
             page: this.state.page + 1,
-          })
+            loading: false
+          });
         }
-
-    }
+      }
+        
+      
 
   render() {
     return (
       <div>
-        <div className="container-fluid mt-lg-5" style={{backgroundColor:"#e9ecef"}}>
+        <div className="container-fluid" style={{backgroundColor:"#e9ecef"}}>
         <br/>
-        <h2 className='text-center'>NewsMonkey - Top Headlines</h2>
+        <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top Headlines</h2>
+       {this.state.loading && <Spinner />}
           <div className="row">
-                {this.state.articles.map((element)=>{
+                {!this.state.loading && this.state.articles.map((element)=>{
                     return <div className="col-md-3" key={element.url} >
                     <NewsItem title={element.title?element.title?.slice(0,45):""} description={element.title?element.description?.slice(0,100):""} imgUrl={element.urlToImage} newsUrl={element.url}/></div>
                 })}
