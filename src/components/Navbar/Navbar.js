@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 export default class Navbar extends Component {
   render() {
+    let {business, entertainment, general, health, science, sports, technology} = this.props;
     return (
       <div>
         <nav className="navbar navbar-expand-lg bg-light shadow bg-body rounded fixed-top" >
@@ -14,6 +15,21 @@ export default class Navbar extends Component {
                 <div className="navbar-nav">
                     <a className="nav-link active" aria-current="page" href="/">Home</a>
                     <a className="nav-link" href="/about">About</a>
+                    <li className="nav-item dropdown">
+                      <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categories
+                      </a>
+                      <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" href={general}>general</a></li>
+                        <li><a className="dropdown-item" href={entertainment}>entertainment</a></li>
+                        <li><a className="dropdown-item" href={science}>science</a></li>
+                        <li><a className="dropdown-item" href={technology}>technology</a></li>
+                        <li><a className="dropdown-item" href={sports}>sports</a></li>
+                        <li><a className="dropdown-item" href={health}>health</a></li>
+                        <li><a className="dropdown-item" href={business}>business</a></li>
+                        
+                      </ul>
+                    </li>
                 </div>
                 </div>
             </div>
