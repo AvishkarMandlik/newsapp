@@ -16,14 +16,17 @@ export default function Footer() {
           </li>
           <li className="list-inline-item">
             <Link to="#">
+            <img width="40" height="40" src="https://img.icons8.com/ios-filled/50/instagram-new--v1.png" alt="instagram-new--v1"/>
           </Link>
           </li>
           <li className="list-inline-item">
             <Link to="#">
+            <img width="40" height="40" src="https://img.icons8.com/ios-filled/50/linkedin.png" alt="linkedin"/>
             </Link>
           </li>
           <li className="list-inline-item">
             <Link to="#">
+            <img width="40" height="40" src="https://img.icons8.com/ios-filled/50/twitter.png" alt="twitter"/>
             </Link>
           </li>
         </ul>
