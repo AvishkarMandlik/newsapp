@@ -20,7 +20,7 @@ export default class Navbar extends Component {
                         Categories
                       </Link>
                       <ul className="dropdown-menu">
-                        <li><Link className="dropdown-item" to="/general">general</Link></li>
+                        <li><Link className="dropdown-item" to="/">general</Link></li>
                         <li><Link className="dropdown-item" to="/entertainment">entertainment</Link></li>
                         <li><Link className="dropdown-item" to="/science">science</Link></li>
                         <li><Link className="dropdown-item" to="/technology">technology</Link></li>
