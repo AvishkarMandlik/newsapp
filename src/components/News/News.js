@@ -87,7 +87,6 @@ export default class News extends Component {
     fetchMoreData = async () => {
       this.setState({page: this.state.page + 1});
       const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-      this.setState({loading: true});
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({ 
@@ -101,13 +100,13 @@ export default class News extends Component {
     return (
       <>
         <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
-       {/* {this.state.loading && <Spinner />} */}
+       {this.state.loading && <Spinner />}
        <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
           hasMore={this.state.articles.length !== this.state.totalResults}
           loader={<Spinner />}>
-            
+        <div className="container-fluid" style={{backgroundColor:"#e9ecef"}}>
           <div className="row">
                 {this.state.articles.map((element, url)=>{
                     return <div className="col-md-3" key={url} >
@@ -115,6 +114,7 @@ export default class News extends Component {
                     author={element.author} date={element.publishedAt} source={element.source.name}/>
                     </div>
                 })}
+            </div>
             </div>
             </InfiniteScroll>
             {/* <div className='container d-flex justify-content-between'>
