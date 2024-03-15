@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import NewsItem from  '../NewsItem/NewsItem'
 import Spinner from '../Spinner/Spinner';
 import PropTypes from 'prop-types'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 export default class News extends Component {
 
@@ -23,7 +24,8 @@ export default class News extends Component {
         this.state = {
             articles: [],
             loading: false,
-            page:1
+            page:1,
+            totalResults:0
         }
         document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`;
     }
@@ -36,7 +38,7 @@ export default class News extends Component {
       this.setState({ 
         articles: parsedData.articles,
         totalResults: parsedData.totalResults,
-        loading: false
+        loading: false,
         }); 
     }
 
@@ -81,6 +83,8 @@ export default class News extends Component {
         this.setState({ page: this.state.page + 1});
         this.UpdateNews();
     }
+
+  
         
       
 
@@ -90,19 +94,26 @@ export default class News extends Component {
         <div className="container-fluid" style={{backgroundColor:"#e9ecef"}}>
         <br/>
         <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
-       {this.state.loading && <Spinner />}
+       {/* {this.state.loading && <Spinner />} */}
+       <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length !== this.state.totalResults}
+          loader={<Spinner />}
+        >
           <div className="row">
-                {!this.state.loading && this.state.articles.map((element)=>{
+                {this.state.articles.map((element)=>{
                     return <div className="col-md-3" key={element.url} >
                     <NewsItem title={element.title?element.title?.slice(0,45):""} description={element.title?element.description?.slice(0,100):""} imgUrl={element.urlToImage} newsUrl={element.url}
                     author={element.author} date={element.publishedAt} source={element.source.name}/>
                     </div>
                 })}
             </div>
-            <div className='container d-flex justify-content-between'>
+            </InfiniteScroll>
+            {/* <div className='container d-flex justify-content-between'>
             <button disabled={this.state.page<=1} type="button" className="btn btn-secondary" onClick={this.handlePrevClick}>&larr; Previous</button>
             <button disabled={this.state.page +1 > Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" className="btn btn-secondary" onClick={this.handleNextClick}>Next &rarr;</button>
-            </div>
+            </div> */}
         </div>
       </div>
     )
