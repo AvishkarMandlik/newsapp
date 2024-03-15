@@ -84,26 +84,33 @@ export default class News extends Component {
         this.UpdateNews();
     }
 
-  
-        
-      
+    fetchMoreData = async () => {
+      this.setState({page: this.state.page + 1});
+      const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      this.setState({loading: true});
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({ 
+        articles: this.state.articles.concat(parsedData.articles), 
+        totalResults: parsedData.totalResults,
+        loading: false,
+        });   
+        };
 
   render() {
     return (
-      <div>
-        <div className="container-fluid" style={{backgroundColor:"#e9ecef"}}>
-        <br/>
+      <>
         <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
        {/* {this.state.loading && <Spinner />} */}
        <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
           hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={<Spinner />}
-        >
+          loader={<Spinner />}>
+            
           <div className="row">
-                {this.state.articles.map((element)=>{
-                    return <div className="col-md-3" key={element.url} >
+                {this.state.articles.map((element, url)=>{
+                    return <div className="col-md-3" key={url} >
                     <NewsItem title={element.title?element.title?.slice(0,45):""} description={element.title?element.description?.slice(0,100):""} imgUrl={element.urlToImage} newsUrl={element.url}
                     author={element.author} date={element.publishedAt} source={element.source.name}/>
                     </div>
@@ -114,8 +121,7 @@ export default class News extends Component {
             <button disabled={this.state.page<=1} type="button" className="btn btn-secondary" onClick={this.handlePrevClick}>&larr; Previous</button>
             <button disabled={this.state.page +1 > Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" className="btn btn-secondary" onClick={this.handleNextClick}>Next &rarr;</button>
             </div> */}
-        </div>
-      </div>
+      </>
     )
   }
 }
