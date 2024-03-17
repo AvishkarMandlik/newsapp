@@ -31,11 +31,13 @@ export default class News extends Component {
     }
 
     async UpdateNews() {
-      this.props.setProgress(0)
+      this.props.setProgress(10)
       const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=${this.state.page}&pageSize=${this.props.pageSize}`;
       this.setState({loading: true});
       let data = await fetch(url);
+      this.props.setProgress(30)
       let parsedData = await data.json();
+      this.props.setProgress(70)
       this.setState({ 
         articles: parsedData.articles,
         totalResults: parsedData.totalResults,
@@ -102,6 +104,7 @@ export default class News extends Component {
   render() {
     return (
       <>
+      <br/><br/>
         <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
        {this.state.loading && <Spinner />}
        <InfiniteScroll
