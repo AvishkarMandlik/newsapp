@@ -44,19 +44,19 @@ export default class News extends Component {
         loading: false,
         }); 
         this.props.setProgress(100)
-
     }
 
     async componentDidMount(){
-      const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=1&pageSize=${this.props.pageSize}`;
-      this.setState({loading: true});
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({ 
-        articles: parsedData.articles,
-        totalResults: parsedData.totalResults,
-        loading: false
-        }); 
+      this.UpdateNews();
+      // const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=5ebd751a689b45d9a9b6870be3458a85&page=1&pageSize=${this.props.pageSize}`;
+      // this.setState({loading: true});
+      // let data = await fetch(url);
+      // let parsedData = await data.json();
+      // this.setState({ 
+      //   articles: parsedData.articles,
+      //   totalResults: parsedData.totalResults,
+      //   loading: false
+      //   }); 
     }
     
      handlePrevClick = async () => {
@@ -104,8 +104,8 @@ export default class News extends Component {
   render() {
     return (
       <>
-      <br/><br/>
-        <h2 className='text-center' style={{margin: '35px 0px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
+      <br/>
+        <h2 className='text-center' style={{margin: '35px'}}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
        {this.state.loading && <Spinner />}
        <InfiniteScroll
           dataLength={this.state.articles.length}
