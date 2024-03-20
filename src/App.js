@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import News from "./components/News/News";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import About from "./components/About/About";
 
 export default class App extends Component {
   pageSize = 5;
@@ -118,6 +119,7 @@ export default class App extends Component {
               }
             ></Route>
           </Routes>
+          <Routes><Route path="/About" element={<About/>}></Route></Routes>          
           <Footer />
         </Router>
       </div>
