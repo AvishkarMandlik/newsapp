@@ -27,7 +27,18 @@ const About = () => {
             The News App Team
           </p>
           <hr className="my-4" />
-          
+          <h3 className="mb-3">About Our React News App</h3>
+          <p>
+            Our News App is built using React, a popular JavaScript library
+            for building user interfaces. With React, we ensure a fast and
+            responsive experience for our users, allowing you to stay updated
+            with the latest headlines effortlessly.
+          </p>
+          <p>
+            We use NewsAPI to fetch the latest news from a variety of trusted
+            sources around the world. This ensures that you receive the most
+            current and reliable news updates in real-time.
+          </p>
         </div>
       </div>
     </div>
